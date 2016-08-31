@@ -108,6 +108,12 @@ module.exports = function Details() {
     });
   });
 
+  box.edit = function(item) {
+    this.setItem(item);
+    this.show();
+    this.screen.render();
+  };
+
   box.setItem = function setItem(item = {}) {
     this._.item = item;
     this._.title.setContent(item.title);
