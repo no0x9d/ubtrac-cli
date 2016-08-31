@@ -24,12 +24,12 @@ module.exports = function Details() {
     cols: 1,
   });
 
-  box.title = grid.set(0, 0, 1, 1, blessed.Box, {label: 'Title', clickable: true, keyable: true});
-  box.description = grid.set(1, 0, 5, 1, contrib.markdown, {label: 'Description', clickable: true, keyable: true});
-  box.workorder = grid.set(6, 0, 1, 1, blessed.Box, {label: 'Workorder', clickable: true, keyable: true});
-  box.project = grid.set(7, 0, 1, 1, blessed.Box, {label: 'Project', clickable: true, keyable: true});
-  box.state = grid.set(8, 0, 1, 1, blessed.Box, {label: 'State', clickable: true, keyable: true});
-  box.worklog = grid.set(9, 0, 3, 1, blessed.List, {label: 'Worklog'});
+  box._.title = grid.set(0, 0, 1, 1, blessed.Box, {label: 'Title', clickable: true, keyable: true});
+  box._.description = grid.set(1, 0, 5, 1, contrib.markdown, {label: 'Description', clickable: true, keyable: true});
+  box._.workorder = grid.set(6, 0, 1, 1, blessed.Box, {label: 'Workorder', clickable: true, keyable: true});
+  box._.project = grid.set(7, 0, 1, 1, blessed.Box, {label: 'Project', clickable: true, keyable: true});
+  box._.state = grid.set(8, 0, 1, 1, blessed.Box, {label: 'State', clickable: true, keyable: true});
+  box._.worklog = grid.set(9, 0, 3, 1, blessed.List, {label: 'Worklog'});
 
   function hideWithEscape(ch, key) {
     if (!box.hidden && key.name === 'escape') {
@@ -49,7 +49,7 @@ module.exports = function Details() {
   }
 
   box.on('show', ()=> {
-    box.title.focus();
+    box._.title.focus();
     box.onScreenEvent('keypress', hideWithEscape);
     box.on('element keypress', setupKeyListener)
   });
@@ -70,13 +70,14 @@ module.exports = function Details() {
     box.screen.render();
   });
 
-  box.setItem = function(item) {
-    this.title.setContent(item.title);
-    this.description.setMarkdown(item.description || '');
-    this.description.set('markdown', item.description);
-    this.workorder.setContent(item.workorder);
-    this.project.setContent(item.project);
-    this.state.setContent(item.state);
+  box.setItem = function setItem(item = {}) {
+    this._.item = item;
+    this._.title.setContent(item.title);
+    this._.description.setMarkdown(item.description || '');
+    this._.description.set('markdown', item.description);
+    this._.workorder.setContent(item.workorder);
+    this._.project.setContent(item.project);
+    this._.state.setContent(item.state);
   };
 
   return box;
