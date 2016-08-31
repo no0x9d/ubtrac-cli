@@ -31,11 +31,23 @@ module.exports = function Details() {
   box._.state = grid.set(8, 0, 1, 1, blessed.Box, {label: 'State'});
   box._.worklog = grid.set(9, 0, 3, 1, blessed.List, {label: 'Worklog'});
 
-  function hideWithEscape(ch, key) {
+  function handleSubmitAndCancel(ch, key) {
     if (!box.hidden && key.name === 'escape') {
       box.hide();
       box.screen.rewindFocus();
       box.screen.render();
+      return false;
+    } else if (!box.hidden && key.name === 'enter'){
+      const item = collectFields(box);
+      box.hide();
+      box.screen.rewindFocus();
+      box.screen.render();
+
+      if (box._.item._id){
+        box.emit('update item', box._.item._id, item);
+      } else {
+        box.emit('create item', item);
+      }
       return false;
     }
   }
@@ -50,11 +62,11 @@ module.exports = function Details() {
 
   box.on('show', ()=> {
     box._.title.focus();
-    box.onScreenEvent('keypress', hideWithEscape);
+    box.onScreenEvent('keypress', handleSubmitAndCancel);
     box.on('element keypress', setupKeyListener)
   });
   box.on('hide', ()=> {
-    box.removeScreenEvent('keypress', hideWithEscape);
+    box.removeScreenEvent('keypress', handleSubmitAndCancel);
     box.removeListener('element keypress', setupKeyListener)
   });
 
@@ -114,6 +126,12 @@ module.exports = function Details() {
     this.screen.render();
   };
 
+  box.new = function() {
+    this.setItem();
+    this.show();
+    this.screen.render();
+  };
+
   box.setItem = function setItem(item = {}) {
     this._.item = item;
     this._.title.setContent(item.title);
@@ -125,5 +143,14 @@ module.exports = function Details() {
   };
 
   return box;
+};
+
+function collectFields(box) {
+  const item = {
+    title: box._.title.getContent(),
+    description: box._.description.get('markdown'),
+    workorder: box._.workorder.getContent(),
+    project: box._.project.getContent()
+  };
+  return item;
 }
-;

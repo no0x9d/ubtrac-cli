@@ -25,6 +25,9 @@ class Tui {
 
     const details = Details();
     details.hide();
+    details.on('update item', (id, item) => controller.updateItem(id,item));
+    details.on('create item', (item) => controller.createItem(item));
+
     board.on('selected item', item => details.edit(item));
     board.on('archive', item => controller.archiveItem(item));
     board.on('change state', controller.changeState.bind(controller));

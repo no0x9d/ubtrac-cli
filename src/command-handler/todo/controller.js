@@ -13,6 +13,16 @@ class Controller {
       .then(()=> this.setItems())
   }
 
+  updateItem(id, props) {
+    this.taskRepository.updateById(id, props)
+      .then(() => this.setItems());
+  }
+
+  createItem(props) {
+    this.taskRepository.create(props)
+      .then(() => this.setItems());
+  }
+
   setItems() {
     this.taskRepository.findAll(this.showArchived)
       .then(tasks => this.tui.setItems(groupBy(tasks, 'state')))
@@ -26,7 +36,7 @@ class Controller {
     }
   }
 
-  toggleShowArchived(){
+  toggleShowArchived() {
     this.showArchived = !this.showArchived;
     this.setItems();
   }
