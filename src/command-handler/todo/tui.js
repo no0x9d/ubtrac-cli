@@ -37,6 +37,7 @@ class Tui {
       controller.toggleShowArchived();
       menuItem.style.bg = controller.showArchived ? 'green' : 'red';
     });
+    menu.on('create new task', () => details.new());
 
     screen.append(menu);
     screen.append(details);

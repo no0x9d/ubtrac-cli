@@ -28,7 +28,7 @@ module.exports = function Details() {
   box._.description = grid.set(1, 0, 5, 1, contrib.markdown, {label: 'Description', clickable: true, keyable: true});
   box._.workorder = grid.set(6, 0, 1, 1, blessed.Box, {label: 'Workorder', clickable: true, keyable: true});
   box._.project = grid.set(7, 0, 1, 1, blessed.Box, {label: 'Project', clickable: true, keyable: true});
-  box._.state = grid.set(8, 0, 1, 1, blessed.Box, {label: 'State', clickable: true, keyable: true});
+  box._.state = grid.set(8, 0, 1, 1, blessed.Box, {label: 'State'});
   box._.worklog = grid.set(9, 0, 3, 1, blessed.List, {label: 'Worklog'});
 
   function hideWithEscape(ch, key) {

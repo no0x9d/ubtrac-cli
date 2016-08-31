@@ -23,6 +23,7 @@ module.exports = function() {
 
   menu.setItems({
     'new': function() {
+      menu.emit('create new task');
     },
     'edit': function() {
     },
