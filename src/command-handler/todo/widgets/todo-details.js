@@ -70,6 +70,44 @@ module.exports = function Details() {
     box.screen.render();
   });
 
+  var prompt = blessed.prompt({
+    parent: box,
+    border: 'line',
+    height: 'shrink',
+    width: 'half',
+    top: 'center',
+    left: 'center',
+    keys: true,
+    vi: true
+  });
+
+  //register 'edit' events
+  [box._.title, box._.workorder, box._.project].forEach(el => {
+    el.on('key e', ()=> {
+      prompt.input('', el.content, (err, value) => {
+        if (err) {
+          return box.screen.debug(err)
+        }
+        if (value !== null) {
+          el.setContent(value);
+        }
+        box.screen.render();
+      })
+    })
+  });
+
+  box._.description.on('key e', ()=> {
+    box.screen.readEditor({value: box._.description.get('markdown')}, (err, value) => {
+      if (err) {
+        return box.screen.debug(err);
+      }
+
+      box._.description.setMarkdown(value);
+      box._.description.set('markdown', value);
+      box.screen.render();
+    });
+  });
+
   box.setItem = function setItem(item = {}) {
     this._.item = item;
     this._.title.setContent(item.title);
