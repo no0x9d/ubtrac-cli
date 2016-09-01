@@ -3,6 +3,7 @@ const blessed = require('blessed');
 const Board = require('./widgets/kanban-board');
 const Menu = require('./widgets/menu');
 const Details = require('./widgets/todo-details');
+require('./util/external-editor'); //monkey patches readEditor of blessed Screen
 
 class Tui {
   show(controller) {
