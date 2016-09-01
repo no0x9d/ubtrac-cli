@@ -3,7 +3,7 @@ const blessed = require('blessed');
 
 module.exports = function() {
   var menu = blessed.listbar({
-    bottom: 0,
+    bottom: 1,
     left: 0,
     right: 0,
     height: 'shrink',

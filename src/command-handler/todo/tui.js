@@ -6,7 +6,9 @@ const Details = require('./widgets/todo-details');
 
 class Tui {
   show(controller) {
+    var term = process.env.TERM === 'cygwin' ? 'windows-ansi' : process.env.TERM;
     var screen = blessed.screen({
+      term: term,
       //dump: __dirname + '/logs/widget.log',
       //log: __dirname + '/logs/console.log',
       smartCSR: true,
@@ -14,8 +16,9 @@ class Tui {
     });
 
     const board = new Board({
+      top: 0,
+      bottom: 4,
       width: '100%',
-      height: '95%',
     }, [
       {label: ' open ', state: 'open'},
       {label: ' doing ', state: 'doing'},
