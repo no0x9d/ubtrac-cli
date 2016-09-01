@@ -22,14 +22,16 @@ module.exports = function Details() {
     dashboardMargin: 1,
     rows: 12,
     cols: 1,
+    hideBorder: true
   });
 
-  box._.title = grid.set(0, 0, 1, 1, blessed.Box, {label: 'Title', clickable: true, keyable: true});
-  box._.description = grid.set(1, 0, 5, 1, contrib.markdown, {label: 'Description', clickable: true, keyable: true});
-  box._.workorder = grid.set(6, 0, 1, 1, blessed.Box, {label: 'Workorder', clickable: true, keyable: true});
-  box._.project = grid.set(7, 0, 1, 1, blessed.Box, {label: 'Project', clickable: true, keyable: true});
-  box._.state = grid.set(8, 0, 1, 1, blessed.Box, {label: 'State'});
-  box._.worklog = grid.set(9, 0, 3, 1, blessed.List, {label: 'Worklog'});
+  box._.title = grid.set(0, 0, 1, 1, blessed.Box, {label: 'Title', clickable: true, keyable: true, border: 'line'});
+  box._.description = grid.set(1, 0, 5, 1, contrib.markdown, {
+    label: 'Description', clickable: true, keyable: true, scrollable: true, alwaysScroll: true, border: 'line'});
+  box._.workorder = grid.set(6, 0, 1, 1, blessed.Box, {label: 'Workorder', clickable: true, keyable: true, border: 'line'});
+  box._.project = grid.set(7, 0, 1, 1, blessed.Box, {label: 'Project', clickable: true, keyable: true, border: 'line'});
+  box._.state = grid.set(8, 0, 1, 1, blessed.Box, {label: 'State', border: {type: 'line', fg:'cyan'}});
+  box._.worklog = grid.set(9, 0, 3, 1, blessed.List, {label: 'Worklog', border: {type: 'line', fg:'cyan'}});
 
   function handleSubmitAndCancel(ch, key) {
     if (!box.hidden && key.name === 'escape') {
