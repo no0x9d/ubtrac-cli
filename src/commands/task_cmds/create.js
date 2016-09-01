@@ -1,6 +1,6 @@
 'use strict';
 exports.command = 'create';
-exports.desc = 'create a new todo with a <title>';
+exports.desc = 'create a new task with a <title>';
 exports.builder = {
   title: {
     alias: 't',

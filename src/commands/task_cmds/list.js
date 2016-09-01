@@ -1,6 +1,6 @@
 'use strict';
 exports.command = 'list';
-exports.desc = 'lists all todos';
+exports.desc = 'lists all tasks';
 exports.builder = {
   all: {
     alias: 'a',

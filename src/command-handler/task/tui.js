@@ -28,11 +28,11 @@ class Tui {
 
     const details = Details();
     details.hide();
-    details.on('update item', (id, item) => controller.updateItem(id,item));
-    details.on('create item', (item) => controller.createItem(item));
+    details.on('update item', (id, item) => controller.updateTask(id,item));
+    details.on('create item', (item) => controller.createTask(item));
 
     board.on('selected item', item => details.edit(item));
-    board.on('archive', item => controller.archiveItem(item));
+    board.on('archive', item => controller.archiveTask(item));
     board.on('change state', controller.changeState.bind(controller));
 
     screen.append(board);
@@ -63,7 +63,7 @@ class Tui {
     })
   }
 
-  setItems(items) {
+  setTasks(items) {
     this.board.setItems(items, t => t.title)
   }
 }

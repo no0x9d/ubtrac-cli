@@ -8,37 +8,37 @@ class Controller {
     this.showArchived = false;
   }
 
-  changeState(item, state) {
-    this.taskRepository.updateById(item._id, {state: state})
-      .then(()=> this.setItems())
+  changeState(task, state) {
+    this.taskRepository.updateById(task._id, {state: state})
+      .then(()=> this.setTasks())
   }
 
-  updateItem(id, props) {
+  updateTask(id, props) {
     this.taskRepository.updateById(id, props)
-      .then(() => this.setItems());
+      .then(() => this.setTasks());
   }
 
-  createItem(props) {
+  createTask(props) {
     this.taskRepository.create(props)
-      .then(() => this.setItems());
+      .then(() => this.setTasks());
   }
 
-  setItems() {
+  setTasks() {
     this.taskRepository.findAll(this.showArchived)
-      .then(tasks => this.tui.setItems(groupBy(tasks, 'state')))
+      .then(tasks => this.tui.setTasks(groupBy(tasks, 'state')))
       .catch(err => console.log(err.message));
   }
 
-  archiveItem(item) {
+  archiveTask(item) {
     if (item.state === 'done') {
       this.taskRepository.updateById(item._id, {archived: true})
-        .then(()=> this.setItems())
+        .then(()=> this.setTasks())
     }
   }
 
   toggleShowArchived() {
     this.showArchived = !this.showArchived;
-    this.setItems();
+    this.setTasks();
   }
 }
 
