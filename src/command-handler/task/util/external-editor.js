@@ -74,8 +74,8 @@ function isCygwin() {
 
 function determineEditor(options) {
   var fallback, editor;
-  fallback = /^win/.test(process.platform) ? 'notepad' : 'vi';
-  if (isCygwin()) fallback = 'vi';
+  fallback = /^win/.test(process.platform) ? 'notepad' : 'vim';
+  if (isCygwin()) fallback = 'vim';
   editor = options.editor || process.env.VISUAL || process.env.EDITOR || fallback;
   return editor;
 }
