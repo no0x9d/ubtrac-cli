@@ -14,7 +14,7 @@ blessed.Screen.prototype.readEditor = readEditor;
  */
 function readEditor(options, callback) {
   if (typeof options === 'string') {
-    options = { editor: options };
+    options = {editor: options};
   }
 
   if (!callback) {
@@ -33,13 +33,7 @@ function readEditor(options, callback) {
     , name = options.name || process.title || 'blessed'
     , rnd = Math.random().toString(36).split('.').pop()
     , file = join(tmpDir(), name + '.' + rnd)
-    , args = [file]
     , opt;
-
-  if(isCygwin()){
-    //rewrite args for vi to be a linux path
-    args = [process.env.TMP + `\\${name}.${rnd}`]
-  }
 
   opt = {
     stdio: 'inherit',
@@ -52,18 +46,25 @@ function readEditor(options, callback) {
     return fs.writeFile(file, options.value, callback);
   }
 
-  return writeFile(function(err) {
+  function runExternalEditor(err) {
     if (err) return callback(err);
-    return self.exec(editor, args, opt, function(err, success) {
+    return self.exec(editor, args, opt, function (err, success) {
       if (err) return callback(err);
-      return fs.readFile(file, 'utf8', function(err, data) {
-        return fs.unlink(file, function() {
+      return fs.readFile(file, 'utf8', function (err, data) {
+        return fs.unlink(file, function () {
           if (!success) return callback(new Error('Unsuccessful.'));
           if (err) return callback(err);
           return callback(null, data);
         });
       });
     });
+  };
+
+  //rewrite args for vi to be a linux path when in cygwin
+  convertToLinuxFileName(file, (err, filename) => {
+    if (err) return callback(err);
+    args = [filename];
+    writeFile(runExternalEditor);
   });
 }
 
@@ -77,4 +78,12 @@ function determineEditor(options) {
   if (isCygwin()) fallback = 'vi';
   editor = options.editor || process.env.VISUAL || process.env.EDITOR || fallback;
   return editor;
+}
+
+function convertToLinuxFileName(file, callback) {
+  if (!isCygwin()) {
+    return callback(null, file);
+  } else {
+    require('child_process').exec('cygpath ' + file, callback);
+  }
 }
