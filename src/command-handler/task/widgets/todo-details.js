@@ -111,7 +111,11 @@ module.exports = function Details() {
   });
 
   box._.description.on('key e', ()=> {
-    box.screen.readEditor({value: box._.description.get('markdown'), name: 'ubtrac'}, (err, value) => {
+    box.screen.readEditor({
+      value: box._.description.get('markdown'),
+      name: 'ubtrac',
+      ext: 'markdown'
+    }, (err, value) => {
       if (err) {
         return box.screen.debug(err);
       }

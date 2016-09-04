@@ -32,7 +32,7 @@ function readEditor(options, callback) {
     , editor = determineEditor(options)
     , name = options.name || process.title || 'blessed'
     , rnd = Math.random().toString(36).split('.').pop()
-    , file = join(tmpDir(), name + '.' + rnd)
+    , file = join(tmpDir(), name + '-' + rnd + '.' + options.ext || 'txt')
     , opt;
 
   opt = {
