@@ -17,6 +17,9 @@ module.exports = function() {
         hover: {
           bg: 'blue'
         },
+      },
+      selected: {
+        bg: 'red'
       }
     }
   });
@@ -25,17 +28,17 @@ module.exports = function() {
     'new': function() {
       menu.emit('create new task');
     },
-    'edit': function() {
-    },
-    'search': function() {
-      menu.emit('trigger search');
-    },
+    // 'show/edit': function() {
+    // },
+    // 'search': function() {
+    //   menu.emit('trigger search');
+    // },
     'show archived': function() {
       menu.emit('toggle show archived', this.element);
     },
-    'work log': function() {
-      menu.emit('show work log');
-    },
+    // 'work log': function() {
+    //   menu.emit('show work log');
+    // },
   });
 
   return menu
