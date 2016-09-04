@@ -4,22 +4,16 @@ const Ubtrac = require('ubtrac-core');
 const osenv = require('osenv');
 const path = require('path');
 const mkdirp = require('mkdirp');
+const Config = require('./config');
 
 const ubtracHome = path.join(osenv.home(), '.ubtrac');
 mkdirp.sync(ubtracHome);
 
 //config
-const configPath = path.join(ubtracHome, 'config.json');
-
-let config;
-try {
-  config = require(configPath);
-} catch (e) {
-  config = {}
-}
+const config = Config.load('config');
 
 //database
-const dbPath = path.join(ubtracHome, 'db');
+const dbPath = config.db || path.join(ubtracHome, 'db');
 mkdirp.sync(dbPath);
 const db = new Db(dbPath, {});
 
