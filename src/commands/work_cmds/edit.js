@@ -39,21 +39,6 @@ exports.builder = {
 
 };
 exports.handler = function(argv) {
-  if(!argv.id) return console.log('could not update. No id specified.');
-
-  console.log('updating work log');
-  const workRepository = require('../../bootstrap').ubtrac.workLogRepository;
-  const objectMapper = require('../../cli-util/object-mapper');
-
-  const workitem = objectMapper(argv, mapping, {filter: (v) => v != undefined});
-  workRepository.updateById(argv.id, workitem)
-    .then(w => console.log(w))
-    .catch(e => console.log(e.message));
-};
-
-const mapping = {
-  start: 'start',
-  end: 'end',
-  description: 'description',
-  task: 'taskId'
+  const bootstrapCommandHandler = require('../../bootstrap-command-handler');
+  bootstrapCommandHandler(argv, require('../../command-handler/work/edit'))
 };
