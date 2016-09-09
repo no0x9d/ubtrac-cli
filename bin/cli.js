@@ -6,7 +6,8 @@ var argv = require('yargs')
   .demand(1)
   .help()
   .fail((msg, err) => {
-    console.error(err);
+    if (err) throw err;
+    console.log(msg);
     process.exit(1);
   })
   .completion('completion')
