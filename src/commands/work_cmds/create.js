@@ -10,7 +10,7 @@ exports.builder = {
     type: 'string',
     default: unset,
     coerce: (input) => {
-      if(input === unset) return unset;
+      if (input === unset) return unset;
       return require('../../cli-util/date-time-parser')(input).toDate()
     }
   },
@@ -20,7 +20,7 @@ exports.builder = {
     type: 'string',
     default: unset,
     coerce: (input) => {
-      if(input === unset) return unset;
+      if (input === unset) return unset;
       return require('../../cli-util/date-time-parser')(input).toDate()
     }
   },
@@ -46,8 +46,9 @@ exports.builder = {
 exports.handler = function(argv) {
   console.log('adding work log');
   const workRepository = require('../../bootstrap').ubtrac.workLogRepository;
-  const workitem = buildWorkItem(argv);
-  console.log(workitem);
+  const objectMapper = require('../../cli-util/object-mapper');
+
+  const workitem = objectMapper(argv, mapping, {filter: (v) => v !== unset});
   workRepository.create(workitem, {stopRunning: argv.stop})
     .then(w => console.log(w))
     .catch(e => console.log(e.message));
@@ -59,15 +60,3 @@ const mapping = {
   description: 'description',
   task: 'taskId'
 };
-
-function buildWorkItem(argv) {
-  const forOwn = require('lodash.forown');
-
-  const workitem = {};
-  forOwn(mapping, (itemKey, argvKey) => {
-    if(argv[argvKey] !== unset){
-      workitem[itemKey] = argv[argvKey];
-    }
-  });
-  return workitem;
-}

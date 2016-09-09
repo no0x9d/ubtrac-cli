@@ -38,16 +38,19 @@ exports.builder = {
 exports.handler = function(argv) {
   console.log('adding task');
   const taskRepository = require('../../bootstrap').ubtrac.taskRepository;
-  const task = buildTask(argv);
+  const objectMapper = require('../../cli-util/object-mapper');
+
+  const task = objectMapper(argv, mapping, {filter: (v) => v != null});
   taskRepository.create(task)
     .then(task => console.log(task))
     .catch(e => console.log(e.message));
 };
 
-function buildTask(argv) {
-  var task = {};
-  Object.keys(exports.builder).forEach(option => {
-    if (argv[option] != null) task[option] = argv[option];
-  });
-  return task;
-}
+const mapping = {
+  title: 'title',
+  description: 'description',
+  workorder: 'workorder',
+  project: 'project',
+  state: 'state',
+  archived: 'archived'
+};

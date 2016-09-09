@@ -5,7 +5,6 @@ exports.command = 'edit';
 exports.desc = 'edit a new work log item with a <description>';
 exports.builder = {
   id: {
-    demand: true,
     alias: 'i',
     describe: 'the id',
     type: 'string'
@@ -37,11 +36,13 @@ exports.builder = {
 
 };
 exports.handler = function(argv) {
-  console.log('updating work log');
   if(!argv.id) return console.log('could not update. No id specified.');
 
+  console.log('updating work log');
   const workRepository = require('../../bootstrap').ubtrac.workLogRepository;
-  const workitem = buildWorkItem(argv);
+  const objectMapper = require('../../cli-util/object-mapper');
+
+  const workitem = objectMapper(argv, mapping, {filter: (v) => v !== unset});
   workRepository.updateById(argv.id, workitem)
     .then(w => console.log(w))
     .catch(e => console.log(e.message));
@@ -53,15 +54,3 @@ const mapping = {
   description: 'description',
   task: 'taskId'
 };
-
-function buildWorkItem(argv) {
-  const forOwn = require('lodash.forown');
-
-  const workitem = {};
-  forOwn(mapping, (itemKey, argvKey) => {
-    if(argv[argvKey] !== unset){
-      workitem[itemKey] = argv[argvKey];
-    }
-  });
-  return workitem;
-}
