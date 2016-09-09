@@ -8,13 +8,21 @@ exports.builder = {
     alias: 's',
     describe: 'start time',
     type: 'string',
-    default: unset
+    default: unset,
+    coerce: (input) => {
+      if(input === unset) return unset;
+      return require('../../cli-util/date-time-parser')(input).toDate()
+    }
   },
   end: {
     alias: 'e',
     describe: 'end time',
     type: 'string',
-    default: unset
+    default: unset,
+    coerce: (input) => {
+      if(input === unset) return unset;
+      return require('../../cli-util/date-time-parser')(input).toDate()
+    }
   },
   description: {
     alias: 'd',
@@ -39,6 +47,7 @@ exports.handler = function(argv) {
   console.log('adding work log');
   const workRepository = require('../../bootstrap').ubtrac.workLogRepository;
   const workitem = buildWorkItem(argv);
+  console.log(workitem);
   workRepository.create(workitem, {stopRunning: argv.stop})
     .then(w => console.log(w))
     .catch(e => console.log(e.message));

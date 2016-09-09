@@ -31,7 +31,7 @@
     "superagent": "^2.2.0",
     "tingodb": "^0.4.2",
     "ubtrac-core": "git+https://github.com/no0x9d/ubtrac-core#development",
-    "yargs": "^4.8.1"
+    "yargs": "^5.0.0"
   },
   "bin": {
     "ubtrac": "./bin/cli.js"
