@@ -9,5 +9,6 @@ var argv = require('yargs')
     console.error(err);
     process.exit(1);
   })
+  .completion('completion')
   .argv;
 
