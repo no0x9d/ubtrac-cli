@@ -1,5 +1,4 @@
 'use strict';
-const unset = Symbol('unset');
 
 exports.command = 'edit';
 exports.desc = 'edit a new work log item with a <description>';
@@ -13,25 +12,29 @@ exports.builder = {
     alias: 's',
     describe: 'start time',
     type: 'string',
-    default: unset
+    coerce: (input) => {
+      if (input == undefined) return undefined;
+      return require('../../cli-util/date-time-parser')(input).toDate()
+    }
   },
   end: {
     alias: 'e',
     describe: 'end time',
     type: 'string',
-    default: unset
+    coerce: (input) => {
+      if (input == undefined) return undefined;
+      return require('../../cli-util/date-time-parser')(input).toDate()
+    }
   },
   description: {
     alias: 'd',
     describe: 'Adding a longer description text',
-    type: 'string',
-    default: unset
+    type: 'string'
   },
   task: {
     alias: 't',
     describe: 'id of parent task',
-    type: 'string',
-    default: unset
+    type: 'string'
   },
 
 };
@@ -42,7 +45,7 @@ exports.handler = function(argv) {
   const workRepository = require('../../bootstrap').ubtrac.workLogRepository;
   const objectMapper = require('../../cli-util/object-mapper');
 
-  const workitem = objectMapper(argv, mapping, {filter: (v) => v !== unset});
+  const workitem = objectMapper(argv, mapping, {filter: (v) => v != undefined});
   workRepository.updateById(argv.id, workitem)
     .then(w => console.log(w))
     .catch(e => console.log(e.message));
