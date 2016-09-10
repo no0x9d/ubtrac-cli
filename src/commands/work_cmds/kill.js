@@ -10,9 +10,6 @@ exports.builder = {
   }
 };
 exports.handler = function(argv) {
-  console.log(`delete item ${argv.id}`);
-  const workRepository = require('../../bootstrap').ubtrac.workLogRepository;
-  workRepository.deleteById(argv.id)
-    .then(w => console.log(w))
-    .catch(e => console.log(e.message));
+  const bootstrapCommandHandler = require('../../bootstrap-command-handler');
+  bootstrapCommandHandler(argv, require('../../command-handler/work/kill'))
 };
