@@ -1,6 +1,6 @@
 const objectMapper = require('../../cli-util/object-mapper');
 
-module.exports = createWorkHandler;
+module.exports = editWorkHandler;
 
 const mapping = {
   start: 'start',
@@ -9,7 +9,7 @@ const mapping = {
   task: 'taskId'
 };
 
-function createWorkHandler(argv, context) {
+function editWorkHandler(argv, context) {
   if(!argv.id) return console.log('could not update. No id specified.');
 
   console.log('updating work log');
