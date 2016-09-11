@@ -8,9 +8,6 @@ exports.builder = {
   }
 };
 exports.handler = function(argv) {
-  console.log('list all tasks');
-  const taskRepository = require('../../bootstrap').ubtrac.taskRepository;
-  taskRepository.findAll(argv.all)
-    .then(tasks => console.log(tasks))
-    .catch(err => console.log(err.message))
+  const bootstrapCommandHandler = require('../../bootstrap-command-handler');
+  bootstrapCommandHandler(argv, require('../../command-handler/task/list'))
 };
